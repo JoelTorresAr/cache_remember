@@ -97,16 +97,29 @@ impl Cache {
         Ok(result)
     }
 
-    pub async fn forget(&self, key: &str) -> Result<(), Box<dyn std::error::Error>> {
+    pub async fn forget(&self, key: &str){
         let mut data = self.data.lock();
         data.remove(key);
-        Ok(())
     }
 
-    pub async fn forget_all(&self) -> Result<(), Box<dyn std::error::Error>> {
+    pub async fn forget_all(&self){
         let mut data = self.data.lock();
         data.clear();
-        Ok(())
+    }
+
+    pub fn purge(&self){
+        let mut data = self.data.lock();
+        let mut keys = Vec::new();
+        for (key, (timestamp, _)) in data.iter() {
+            if let Some(timestamp) = timestamp {
+                if SystemTime::now().duration_since(*timestamp).is_ok() {
+                    keys.push(key.clone());
+                }
+            }
+        }
+        for key in keys {
+            data.remove(&key);
+        }
     }
 }
 
@@ -170,7 +183,7 @@ mod tests {
         let result = cache.get::<String>("test_forget").await.unwrap();
         assert_eq!(result.unwrap(), "Hello World");
 
-        cache.forget("test_forget").await.unwrap();
+        cache.forget("test_forget").await;
         let result = cache.get::<String>("test_forget").await.unwrap();
         assert_eq!(result, None);
     }
@@ -182,7 +195,7 @@ mod tests {
         let result = cache.get::<String>("test_forget_all").await.unwrap();
         assert_eq!(result.unwrap(), "Hello World");
 
-        cache.forget_all().await.unwrap();
+        cache.forget_all().await;
         let result = cache.get::<String>("test_forget_all").await.unwrap();
         assert_eq!(result, None);
     }

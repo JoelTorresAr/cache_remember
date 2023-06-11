@@ -58,5 +58,8 @@ and store the result in cache for future queries.
             //forget all cache
             cache.forget_all();
             println!("{:?}", cache);
+
+            //purge expired records in cache
+            cache.purge();
     }
 ```
