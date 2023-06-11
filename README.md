@@ -5,6 +5,11 @@
 Cache Remember is a simple caching library for rust that allows you to cache the result of a function call for a given amount of time.
 Inspired in laravel's cache remember.
 
+| Resource          | Link                                                                                                                      |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| Crate             | [![Crates.io](https://img.shields.io/crates/v/wkhtmlapp?color=warning&style=plastic)]                                     |
+| Documentation     | [Cargo docs](https://github.com/JoelTorresAr/cache_remember.git)                                                          |
+| Cache remember Version | [cache_remember_0.1.0](https://github.com/wkhtmltopdf/packaging/releases)                                                   |
 
 ## EXAMPLE
 
