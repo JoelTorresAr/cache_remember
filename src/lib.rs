@@ -1,17 +1,19 @@
-use parking_lot::Mutex;
+mod err;
+use err::{CacheErr, CacheResult};
+use parking_lot::RwLock;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::time::{Duration, SystemTime};
 
 #[derive(Debug)]
 pub struct Cache {
-    data: Mutex<HashMap<String, (Option<SystemTime>, String)>>,
+    data: RwLock<HashMap<String, (Option<SystemTime>, String)>>,
 }
 
 impl Cache {
     pub fn new() -> Self {
         Cache {
-            data: Mutex::new(HashMap::new()),
+            data: RwLock::new(HashMap::new()),
         }
     }
 
@@ -19,7 +21,7 @@ impl Cache {
     where
         T: Clone + Serialize + for<'de> Deserialize<'de>,
     {
-        let data = self.data.lock();
+        let data = self.data.read();
         if let Some((_, result)) = data.get(key) {
             let result: T = serde_json::from_str(result)?;
             return Ok(Some(result));
@@ -31,23 +33,24 @@ impl Cache {
     where
         T: Clone + Serialize + for<'de> Deserialize<'de>,
     {
-        let mut data = self.data.lock();
+        let mut data = self.data.write();
         let serialize = serde_json::to_string(&value)?;
         data.insert(key.to_string(), (None, serialize));
         Ok(())
     }
 
-    pub async fn remember<F, T>(
+    pub async fn remember<F, T, E>(
         &self,
         key: &str,
         hours: u64,
         func: F,
-    ) -> Result<T, Box<dyn std::error::Error>>
+    ) -> CacheResult<T>
     where
         T: Clone + Serialize + for<'de> Deserialize<'de>,
-        F: std::future::Future<Output = Result<T, Box<dyn std::error::Error>>>,
+        F: std::future::Future<Output = Result<T, E>>,
+        E: std::fmt::Display,
     {
-        let data = self.data.lock();
+        let data = self.data.read();
         if let Some((timestamp, result)) = data.get(key) {
             if let Some(timestamp) = timestamp {
                 if SystemTime::now().duration_since(*timestamp)?
@@ -64,24 +67,25 @@ impl Cache {
 
         drop(data);
 
-        let result = func.await?;
-        let mut data = self.data.lock();
+        let result = func.await.map_err(|e| CacheErr::ExternalError(e.to_string()))?;
+        let mut data = self.data.write();
         let serialize = serde_json::to_string(&result)?;
         data.insert(key.to_string(), (Some(SystemTime::now()), serialize));
 
         Ok(result)
     }
 
-    pub async fn remember_forever<F, T>(
+    pub async fn remember_forever<F, T, E>(
         &self,
         key: &str,
         func: F,
-    ) -> Result<T, Box<dyn std::error::Error>>
+    ) -> CacheResult<T>
     where
         T: Clone + Serialize + for<'de> Deserialize<'de>,
-        F: std::future::Future<Output = Result<T, Box<dyn std::error::Error>>>,
+        F: std::future::Future<Output = Result<T, E>>,
+        E: std::fmt::Display,
     {
-        let data = self.data.lock();
+        let data = self.data.read();
         if let Some((_, result)) = data.get(key) {
             let result: T = serde_json::from_str(result)?;
             return Ok(result.clone());
@@ -89,26 +93,26 @@ impl Cache {
 
         drop(data); // Liberar el Mutex antes de llamar a `func`
 
-        let result = func.await?;
-        let mut data = self.data.lock();
+        let result = func.await.map_err(|e| CacheErr::ExternalError(e.to_string()))?;
+        let mut data = self.data.write();
         let serialize = serde_json::to_string(&result)?;
         data.insert(key.to_string(), (None, serialize));
 
         Ok(result)
     }
 
-    pub fn forget(&self, key: &str){
-        let mut data = self.data.lock();
+    pub fn forget(&self, key: &str) {
+        let mut data = self.data.write();
         data.remove(key);
     }
 
-    pub fn forget_all(&self){
-        let mut data = self.data.lock();
+    pub fn forget_all(&self) {
+        let mut data = self.data.write();
         data.clear();
     }
 
-    pub fn purge(&self){
-        let mut data = self.data.lock();
+    pub fn purge(&self) {
+        let mut data = self.data.write();
         let mut keys = Vec::new();
         for (key, (timestamp, _)) in data.iter() {
             if let Some(timestamp) = timestamp {
@@ -126,9 +130,9 @@ impl Cache {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use serde::{Deserialize, Serialize};
     use std::thread;
     use std::time::Duration;
-    use serde::{Deserialize, Serialize};
     use tokio;
 
     #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -157,7 +161,10 @@ mod tests {
     async fn test_remember_forever() {
         let cache = Cache::new();
         let fun = get_user();
-        let result = cache.remember_forever("test_remember_forever", fun).await.unwrap();
+        let result = cache
+            .remember_forever("test_remember_forever", fun)
+            .await
+            .unwrap();
         assert_eq!(result.name, "Joel Torres");
     }
 
@@ -191,7 +198,9 @@ mod tests {
     #[tokio::test]
     async fn test_forget_all() {
         let cache = Cache::new();
-        cache.put("test_forget_all", "Hello World".to_string()).unwrap();
+        cache
+            .put("test_forget_all", "Hello World".to_string())
+            .unwrap();
         let result = cache.get::<String>("test_forget_all").unwrap();
         assert_eq!(result.unwrap(), "Hello World");
 
