@@ -5,6 +5,10 @@
 Cache Remember is a simple caching library for rust that allows you to cache the result of a function call for a given amount of time.
 Inspired in laravel's cache remember.
 
+The remember function uses an async function as one of its parameters, which function must return a value that has Deserialize implemented, 
+Serialize for serde. If it has a cached value, it returns the value without executing the function, otherwise it will execute the function 
+and store the result in cache for future queries.
+
 | Resource          | Link                                                                                                                      |
 | ----------------- | ------------------------------------------------------------------------------------------------------------------------- |
 | Crate             | [![Crates.io](https://img.shields.io/crates/v/wkhtmlapp?color=warning&style=plastic)]                                     |
