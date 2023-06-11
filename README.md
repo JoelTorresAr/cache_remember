@@ -19,7 +19,8 @@ and store the result in cache for future queries.
 REMOVE INNECESARY ASYNC AND RETURN RESULT IN forget(), forget_all() and purge() functions.
 
 ## [0.1.3] - 2023-06-11
-Changed Box dyn std::error::Error so that it now accepts functions that return any Error as long as it has the Display trait implemented
+Changed Box dyn std::error::Error so that it now accepts functions that return any Error as long as it has the Display trait implemented.
+Change Mutex to RwLock to allow multiple reads at the same time.
 ## EXAMPLE
 
 ```rust

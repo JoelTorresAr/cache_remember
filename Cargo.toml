@@ -1,7 +1,7 @@
 [package]
 name = "cache_remember"
 edition = "2021"
-version = "0.1.2"
+version = "0.1.3"
 authors = ["Torres Farro Denis Joel <djoel_torres@hotmail.com>"]
 description = "Cache inspired by Laravel's cache remember forever"
 keywords = ["cache", "remember_forever" , "remember", "forget", "flush"]
