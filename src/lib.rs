@@ -1,5 +1,5 @@
 mod err;
-use err::{CacheErr, CacheResult};
+pub use err::{CacheErr, CacheResult};
 use parking_lot::RwLock;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
