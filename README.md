@@ -1,6 +1,6 @@
 # CACHE REMEMBER: README.md
 
-## [1.0.0] - 2020-01-01
+## [0.1.1] - 2020-01-01
 
 Cache Remember is a simple caching library for rust that allows you to cache the result of a function call for a given amount of time.
 Inspired in laravel's cache remember.
@@ -9,11 +9,11 @@ The remember function uses an async function as one of its parameters, which fun
 Serialize for serde. If it has a cached value, it returns the value without executing the function, otherwise it will execute the function 
 and store the result in cache for future queries.
 
-| Resource          | Link                                                                                                                      |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| Crate             | [![Crates.io](https://img.shields.io/crates/v/wkhtmlapp?color=warning&style=plastic)]                                     |
-| Documentation     | [Cargo docs](https://github.com/JoelTorresAr/cache_remember.git)                                                          |
-| Cache remember Version | [cache_remember_0.1.0](https://github.com/wkhtmltopdf/packaging/releases)                                                   |
+| Resource          | Link                                                                                                                              |
+| ----------------- | ----------------------------------------------------------------------------------------------------------------------------------|
+| Crate             | [![Crates.io](https://img.shields.io/crates/v/wkhtmlapp?color=warning&style=plastic)](https://crates.io/crates/cache_remember)    |
+| Documentation     | [Cargo docs](https://github.com/JoelTorresAr/cache_remember.git)                                                                  |
+| Cache remember Version | [0.1.1](https://github.com/wkhtmltopdf/packaging/releases)                                                    |
 
 ## EXAMPLE
 
