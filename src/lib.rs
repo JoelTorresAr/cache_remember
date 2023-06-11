@@ -15,7 +15,7 @@ impl Cache {
         }
     }
 
-    pub async fn get<T>(&self, key: &str) -> Result<Option<T>, Box<dyn std::error::Error>>
+    pub fn get<T>(&self, key: &str) -> Result<Option<T>, Box<dyn std::error::Error>>
     where
         T: Clone + Serialize + for<'de> Deserialize<'de>,
     {
@@ -27,7 +27,7 @@ impl Cache {
         Ok(None)
     }
 
-    pub async fn put<T>(&self, key: &str, value: T) -> Result<(), Box<dyn std::error::Error>>
+    pub fn put<T>(&self, key: &str, value: T) -> Result<(), Box<dyn std::error::Error>>
     where
         T: Clone + Serialize + for<'de> Deserialize<'de>,
     {
@@ -97,12 +97,12 @@ impl Cache {
         Ok(result)
     }
 
-    pub async fn forget(&self, key: &str){
+    pub fn forget(&self, key: &str){
         let mut data = self.data.lock();
         data.remove(key);
     }
 
-    pub async fn forget_all(&self){
+    pub fn forget_all(&self){
         let mut data = self.data.lock();
         data.clear();
     }
@@ -164,39 +164,39 @@ mod tests {
     #[tokio::test]
     async fn test_get() {
         let cache = Cache::new();
-        let result = cache.get::<String>("test_get").await.unwrap();
+        let result = cache.get::<String>("test_get").unwrap();
         assert_eq!(result, None);
     }
 
     #[tokio::test]
     async fn test_put() {
         let cache = Cache::new();
-        cache.put("test_put", "Hello World".to_string()).await.unwrap();
-        let result = cache.get::<String>("test_put").await.unwrap();
+        cache.put("test_put", "Hello World".to_string()).unwrap();
+        let result = cache.get::<String>("test_put").unwrap();
         assert_eq!(result.unwrap(), "Hello World");
     }
 
     #[tokio::test]
     async fn test_forget() {
         let cache = Cache::new();
-        cache.put("test_forget", "Hello World".to_string()).await.unwrap();
-        let result = cache.get::<String>("test_forget").await.unwrap();
+        cache.put("test_forget", "Hello World".to_string()).unwrap();
+        let result = cache.get::<String>("test_forget").unwrap();
         assert_eq!(result.unwrap(), "Hello World");
 
-        cache.forget("test_forget").await;
-        let result = cache.get::<String>("test_forget").await.unwrap();
+        cache.forget("test_forget");
+        let result = cache.get::<String>("test_forget").unwrap();
         assert_eq!(result, None);
     }
 
     #[tokio::test]
     async fn test_forget_all() {
         let cache = Cache::new();
-        cache.put("test_forget_all", "Hello World".to_string()).await.unwrap();
-        let result = cache.get::<String>("test_forget_all").await.unwrap();
+        cache.put("test_forget_all", "Hello World".to_string()).unwrap();
+        let result = cache.get::<String>("test_forget_all").unwrap();
         assert_eq!(result.unwrap(), "Hello World");
 
-        cache.forget_all().await;
-        let result = cache.get::<String>("test_forget_all").await.unwrap();
+        cache.forget_all();
+        let result = cache.get::<String>("test_forget_all").unwrap();
         assert_eq!(result, None);
     }
 }

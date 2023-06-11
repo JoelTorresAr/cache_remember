@@ -1,6 +1,6 @@
 # CACHE REMEMBER: README.md
 
-## [0.1.1] - 2020-01-01
+## [0.1.1] - 2023-06-11
 
 Cache Remember is a simple caching library for rust that allows you to cache the result of a function call for a given amount of time.
 Inspired in laravel's cache remember.
