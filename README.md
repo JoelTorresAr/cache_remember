@@ -19,8 +19,8 @@ and store the result in cache for future queries.
 REMOVE INNECESARY ASYNC AND RETURN RESULT IN forget(), forget_all() and purge() functions.
 
 ## [0.1.3] - 2023-06-11
-The function that was passed as a parameter was changed to be strictly Result<T, Box<dyn std::error::Error>>, 
-now it accepts functions that return an Error that has the Display trait implemented
+The function that was passed as a parameter and was strictly Result<T, Box<dyn std::error::Error>> 
+was changed so that it now accepts functions that return any Error as long as it has the Display trait implemented.
 ## EXAMPLE
 
 ```rust
