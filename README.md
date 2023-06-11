@@ -1,7 +1,13 @@
 # CACHE REMEMBER: README.md
 
-## [0.1.1] - 2023-06-11
+| Resource          | Link                                                                                                                              |
+| ----------------- | ----------------------------------------------------------------------------------------------------------------------------------|
+| Crate version     | [![Crates.io](https://img.shields.io/crates/v/wkhtmlapp?color=warning&style=plastic)](https://crates.io/crates/cache_remember)    |
+| Documentation     | [Cargo docs](https://github.com/JoelTorresAr/cache_remember.git)                                                                  |
 
+
+
+## [0.1.0] - 2023-06-11
 Cache Remember is a simple caching library for rust that allows you to cache the result of a function call for a given amount of time.
 Inspired in laravel's cache remember.
 
@@ -9,12 +15,8 @@ The remember function uses an async function as one of its parameters, which fun
 Serialize for serde. If it has a cached value, it returns the value without executing the function, otherwise it will execute the function 
 and store the result in cache for future queries.
 
-| Resource          | Link                                                                                                                              |
-| ----------------- | ----------------------------------------------------------------------------------------------------------------------------------|
-| Crate             | [![Crates.io](https://img.shields.io/crates/v/wkhtmlapp?color=warning&style=plastic)](https://crates.io/crates/cache_remember)    |
-| Documentation     | [Cargo docs](https://github.com/JoelTorresAr/cache_remember.git)                                                                  |
-| Cache remember Version | [0.1.1](https://github.com/wkhtmltopdf/packaging/releases)                                                    |
-
+## [0.1.2] - 2023-06-11
+REMOVE INNECESARY ASYNC AND RETURN RESULT IN forget(), forget_all() and purge() functions.
 ## EXAMPLE
 
 ```rust
