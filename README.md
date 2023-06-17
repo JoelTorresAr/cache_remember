@@ -1,4 +1,24 @@
 # CACHE REMEMBER: README.md
+**Deprecated Library Notice**
+
+⚠️ **Attention**: This library is deprecated! ⚠️
+
+This is a friendly reminder that the library you are currently using has been marked as deprecated. We strongly recommend transitioning to the stable version of `cacheapp` instead. You can find the stable version at [https://github.com/JoelTorresAr/cacheapp.git](https://github.com/JoelTorresAr/cacheapp.git).
+
+It is important to update your dependencies to ensure compatibility, security, and access to the latest features. By migrating to the stable `cacheapp` version, you will benefit from a more reliable and well-maintained solution.
+
+Please note that the deprecated library might still be functional for the time being, but it will no longer receive updates or support. It is in your best interest to make the switch as soon as possible to avoid potential issues down the line.
+
+Thank you for your understanding and cooperation in keeping your codebase up to date. If you have any questions or need assistance during the migration process, feel free to reach out to the `cacheapp` community or the library's maintainers.
+
+Happy coding with `cacheapp`! 🚀
+
+Best regards,
+
+[Joel Torres]"
+
+
+
 
 | Resource          | Link                                                                                                                              |
 | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------|
