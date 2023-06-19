@@ -3,7 +3,8 @@
 
 ⚠️ **Attention**: This library is deprecated! ⚠️
 
-This is a friendly reminder that the library you are currently using has been marked as deprecated. We strongly recommend transitioning to the stable version of `cacheapp` instead. You can find the stable version at [https://github.com/JoelTorresAr/cacheapp.git](https://github.com/JoelTorresAr/cacheapp.git).
+This is a friendly reminder that the library you are currently using has been marked as deprecated. We strongly recommend transitioning to the stable version of `cacheapp` instead. You can find the stable version at [crates.io](https://crates.io/crates/cacheapp), 
+[github](https://github.com/JoelTorresAr/cacheapp.git).
 
 It is important to update your dependencies to ensure compatibility, security, and access to the latest features. By migrating to the stable `cacheapp` version, you will benefit from a more reliable and well-maintained solution.
 
